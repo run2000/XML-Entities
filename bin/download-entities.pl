@@ -158,8 +158,8 @@ sub report_error {
 sub parse_ent {
     my ($ent_file_ref) = @_;
     if (not ref $ent_file_ref) { $ent_file_ref = \$ent_file_ref }
-    my @raw_defs = $$ent_file_ref =~ /(?<=<!ENTITY) \s* \w+ \s+ "&[^"]+" (?=\s*>)/sgx;
-    my @name_value_pairs = map {my ($n, $v) = /(\w+) \s* "&\# ([^"]+) "/sx; [$n, $v]} @raw_defs;
+    my @raw_defs = $$ent_file_ref =~ /(?<=<!ENTITY) \s* [\w\.]+ \s+ "&[^"]+" (?=\s*>)/sgx;
+    my @name_value_pairs = map {my ($n, $v) = /([\w\.]+) \s* "&\# ([^"]+) "/sx; [$n, $v]} @raw_defs;
     for (@name_value_pairs) {
         my $v = $$_[1];
         # For some reason, some entities like &lt; are defined like &#38;#60; instead of &#60; - just get rid of 38;#
